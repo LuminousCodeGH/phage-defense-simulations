@@ -3,7 +3,7 @@ from fipy import CellVariable, Grid2D, DiffusionTerm, TransientTerm
 
 
 class QuorumDiffuser():
-    def __init__(self, grid: np.ndarray, quorum_params: dict[str, float], cell_params: dict[str, float]):
+    def __init__(self, grid: dict[str, np.ndarray], quorum_params: dict[str, float], cell_params: dict[str, float]):
         self.quorum_params = quorum_params
         self.cell_params = cell_params
 
@@ -37,14 +37,14 @@ class QuorumDiffuser():
         return self.cell_params['dx']
     
     @property
-    def quorum_dx(self) -> int:
+    def quorum_dx(self) -> float:
         return self._quorum_dx
     
     @staticmethod
     def _get_grid_size(grid: dict[str, np.ndarray], subgrid: str='quorum') -> int:
         return grid[subgrid].shape[0]
 
-    def _generate_infection_map(self, grid: dict[np.ndarray]) -> np.ndarray:
+    def _generate_infection_map(self, grid: dict[str, np.ndarray]) -> np.ndarray:
         '''Map cell mass from cell grid to quorum grid'''
         cell_grid = grid['cell']
         quorum_grid = grid['quorum']
@@ -76,5 +76,5 @@ class QuorumDiffuser():
 
         return self.mesh_to_numpy(grid)
 
-    def mesh_to_numpy(self, grid: dict[np.ndarray]) -> np.ndarray:
+    def mesh_to_numpy(self, grid: dict[str, np.ndarray]) -> np.ndarray:
         return np.array(self.quorum.value, dtype=np.float64).reshape((self._get_grid_size(grid), self._get_grid_size(grid)))

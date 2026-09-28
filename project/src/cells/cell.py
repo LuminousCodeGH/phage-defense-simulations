@@ -108,7 +108,7 @@ class Cell():
             self.mass = self.mass_init
             return new_cell
 
-    def _divide(self, grid: dict[str, np.ndarray]) -> 'Cell':
+    def _divide(self, grid: dict[str, np.ndarray]) -> object | None:
         self._update_free_spots(grid)
         # Filter out zero-weighted spots
         filtered_spots = []
@@ -131,7 +131,7 @@ class Cell():
                 self.quorum_diffuser)
         return new_cell
 
-    def _roll_infection_probability(self, grid: dict[str, np.ndarray]) -> bool:
+    def _roll_infection_probability(self, grid: dict[str, np.ndarray]) -> None:
         p_infection = 1 - np.exp(-self.adsoption_net * self._get_average_at_pos(grid, compound='phage'))
         if random.random() < p_infection and p_infection > 0.00001:
             print(f'Infected cell at position {self.coord}')

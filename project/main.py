@@ -52,5 +52,12 @@ if __name__ == "__main__":
     size_factor = grid_params['size_factor']
     dt = grid_params['dt']
     grid_sizes = {'cell': grid_length, 'substrate': grid_length*size_factor, 'phage': grid_length*size_factor, 'quorum': grid_length*size_factor}
-    sim = SimulationController(grid_sizes, dt, steps=int(1 / dt), initial_cells=300, initial_infected=0, params=params, cell_type=RunningCell)
+    sim = SimulationController(
+        grid_sizes, 
+        dt, 
+        steps=int(1 / dt), 
+        initial_cells=300, 
+        initial_infected=0, 
+        params=params, 
+        cell_type=selected_cell_type)
     sim.simulate(t_inject_phage=dt*60*5, sim_title=f'QS {args.cell_type} Simulation', file_name=args.output, live_vis=args.live)

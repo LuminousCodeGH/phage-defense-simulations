@@ -3,7 +3,7 @@ from fipy import CellVariable, Grid2D, DiffusionTerm, TransientTerm
 
 
 class PhageDiffuser():
-    def __init__(self, grid: np.ndarray, phage_params: dict[str, float], cell_params: dict[str, float]):
+    def __init__(self, grid: dict[str, np.ndarray], phage_params: dict[str, float], cell_params: dict[str, float]):
         self.phage_params = phage_params
         self.cell_params = cell_params
 
@@ -33,7 +33,7 @@ class PhageDiffuser():
         return self.cell_params['dx']
     
     @property
-    def phage_dx(self) -> int:
+    def phage_dx(self) -> float:
         return self._phage_dx
     
     @staticmethod
@@ -72,5 +72,5 @@ class PhageDiffuser():
         self.phage.setValue(phage_2d.ravel())  # Update the CellVariable with new values
         return self.mesh_to_numpy(grid)
 
-    def mesh_to_numpy(self, grid: dict[np.ndarray]) -> np.ndarray:
+    def mesh_to_numpy(self, grid: dict[str, np.ndarray]) -> np.ndarray:
         return np.array(self.phage.value, dtype=np.float64).reshape((self._get_grid_size(grid), self._get_grid_size(grid)))

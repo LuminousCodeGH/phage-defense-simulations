@@ -45,14 +45,14 @@ class SubstrateDiffuser():
         return self.cell_params['dx']
     
     @property
-    def subs_dx(self) -> int:
+    def subs_dx(self) -> float:
         return self._subs_dx
     
     @staticmethod
     def _get_grid_size(grid: dict[str, np.ndarray], subgrid: str='substrate') -> int:
         return grid[subgrid].shape[0]
     
-    def _generate_cell_mass_map(self, grid: dict[np.ndarray]) -> np.ndarray:
+    def _generate_cell_mass_map(self, grid: dict[str, np.ndarray]) -> np.ndarray:
         '''Map cell mass from cell grid to substrate grid'''
         cell_grid = grid['cell']
         subs_grid = grid['substrate']
@@ -88,5 +88,5 @@ class SubstrateDiffuser():
         self.substrate.setValue(np.minimum(self.substrate.value, self.max_concentration))
         return self.mesh_to_numpy(grid)
 
-    def mesh_to_numpy(self, grid: dict[np.ndarray]) -> np.ndarray:
+    def mesh_to_numpy(self, grid: dict[str, np.ndarray]) -> np.ndarray:
         return np.array(self.substrate.value).reshape((self._get_grid_size(grid), self._get_grid_size(grid)))

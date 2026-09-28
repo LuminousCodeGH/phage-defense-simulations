@@ -14,7 +14,7 @@ from src.diffusers.quorum_diffuser import QuorumDiffuser
 
 class SimulationController:
     '''Simulation controller to simulate the cells move grow and divide'''
-    def __init__(self, grid_sizes: dict[str, int], dt: float, steps: int, initial_cells: int, initial_infected: int, params: dict[str, dict], cell_type: Cell=Cell):
+    def __init__(self, grid_sizes: dict[str, int], dt: float, steps: int, initial_cells: int, initial_infected: int, params: dict[str, dict], cell_type: type[Cell]):
         self.cell_grid_size = grid_sizes['cell']
         self.cell_grid = np.full((self.cell_grid_size, self.cell_grid_size), None)
         self.subs_grid_size = grid_sizes['substrate']
@@ -35,7 +35,7 @@ class SimulationController:
         self.dt = dt
         self.t = 0
         self.combined_cmap = None
-        self.sim_data: dict[str, dict] = {
+        self.sim_data: dict[str, list] = {
             'time': [],
             'healthy_cells': [],
             'infected_cells': [],
@@ -148,7 +148,7 @@ class SimulationController:
     def _save_data(self, file_name: str) -> None:
         pd.DataFrame(self.sim_data).to_csv(f'results/{file_name}.csv')
 
-    def step(self, dt: dict[str, float]):
+    def step(self, dt: float):
         self.sim_data['time'].append(self.t)
         self.sim_data['healthy_cells'].append(self.healthy_cells)
         self.sim_data['infected_cells'].append(self.infected_cells)
